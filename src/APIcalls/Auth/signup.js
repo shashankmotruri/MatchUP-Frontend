@@ -27,10 +27,14 @@ import {API_URL} from '../Backend_URL';
 // }
 
 export default async function SignUp(user) {
-    return ({status: 200,msg : 'User Sucessfully Signed Up'})
-    // if(!user.email){
-    //     return ({status: 401,msg : 'Please Enter all input fields!'});
-    // }
+    // return ({status: 200,msg : 'User Sucessfully Signed Up'})
+    if(!user.email || !user.password || !user.DOB || !user.firstName || !user.lastName || !user.file){
+        console.log("Please Enter all input fields!")
+        return ({status: 401,msg : 'Please Enter all input fields!'});
+    }
+    if(user.password !== user.confirmPassword){
+        return ({status: 401,msg : 'Passwords does not match!'})
+    }
     // console.log(isuserExists(user.email) === true)
     // if(isuserExists(user.email) === true){
     //     console.log("User already exists")
@@ -40,16 +44,32 @@ export default async function SignUp(user) {
     //     return ({status: 401,msg : 'Password does not match. Please check password entered!'});
     // }
     // else{
-    //    return await axios.post(`${API_URL}/users`,user)
-    //     .then((response) => { 
-    //         if(response.status === 200 || response.status ===201){
-    //             return ({status: 200,msg : 'User Sucessfully Signed Up',user: user});
-    //         }
-    //         return ({status: 500,msg : 'Internal Server Error'});
-    //     })
-    //     .catch((error) => {
-    //         console.log(error);
-    //         return ({status: 500,msg : 'Internal Server Error'});
-    //     })
-    // }
+    let bodyFormData = new FormData();
+    bodyFormData.append('firstName', user.firstName);
+    bodyFormData.append('lastName', user.lastName);
+    bodyFormData.append('email', user.email);
+    bodyFormData.append('password', user.password);
+    bodyFormData.append('DOB', user.DOB);
+    bodyFormData.append('file', user.file);
+    
+    return await axios({
+        method: "post",
+        url:`${API_URL}/users/signup`,
+        data: bodyFormData,
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+        .then(function (response) {
+          //handle success
+          console.log(response)
+          if(response.status === 200 || response.status ===201){
+              
+              return ({status: response.status,msg : response.data.message,user: response.data.user});
+          }
+          return ({status: response.status,msg : response.data.message,error : response.error});
+        })
+        .catch(function (error) {
+          //handle error 
+          console.log(error.response);
+            return ({status: error.response.status,msg : error.response.data.message});
+        });
 }

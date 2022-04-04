@@ -75,7 +75,7 @@ export default function BlogPostCard(props) {
 
   const handleRemoveFavouriteItem = (e,id) => {
     e.preventDefault();
-    let userId = localStorage.getItem('userId') || 1;
+    let userId = localStorage.getItem('userId');
     RemoveFavouriteBlog(id,userId)
     .then((res) => {
       console.log(res);

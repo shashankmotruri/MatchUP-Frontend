@@ -95,10 +95,9 @@ export default function EcommerceShop() {
     const dispatch = useDispatch();
 
     const [search, setSearch] = useState('');
-  
-    const Products = useSelector((state) => state.productsReducer);
 
-    const [currPage ,setcurrPage] = useState(0);
+    const Products = useSelector((state) => state.productsReducer);
+    const [currPage ,setcurrPage] = useState(localStorage.getItem("PageNo") || 1);
     const [totalPages, setTotalPages] = useState(0);
 
     
@@ -152,18 +151,30 @@ export default function EcommerceShop() {
       let pageId = window.location.pathname.split("/")[3];
       setcurrPage(pageId);
 
-      GetAllProducts()
-      .then(res => {
-        setTotalPages(Math.ceil(res.data.length/12));
-      })
+      // GetAllProducts()
+      // .then(res => {
+      //   setTotalPages(Math.ceil(res.data.length/12));
+      // })
 
       GetProducts(pageId)
       .then((res => {
         console.log(res.data);
         dispatch({
           type: "FETCH_POST_REQUEST",
-          payload: res.data
+          payload: res.data.products
         })
+      }))
+
+      GetAllProducts()
+      .then((res => {
+        if(res){
+        console.log(res.data);
+        setTotalPages(Math.ceil(res.data.length/2));
+        // dispatch({
+        //   type: "FETCH_POST_REQUEST",
+        //   payload: res.data
+        // })
+        }
       }))
 
       if (search) {
@@ -184,32 +195,28 @@ export default function EcommerceShop() {
 
       console.log(Products)
     }, [search,selectedProductImage]);
+    let sellerid = localStorage.getItem('userId');
 
     const SaveProduct = (e) => {
       if(productTitle && productPrice && productPrice > 0){
-        CreateProduct(productTitle, productPrice, selectedProductImage)
-        // .then(() => {
-        //   GetProducts()
-        //   .then((res => {
-        //     if(res){
-        //     console.log(res.data);
-        //     dispatch({
-        //       type: "FETCH_POST_REQUEST",
-        //       payload: res.data
-        //     })
-        //     switch(res.status){
-        //       case 200 : {setSnackMsg("Successfully created product");setSeverity("success");};break;
-        //       case 401 : {setSnackMsg("Error creating product");setSeverity("warning")};break;
-        //       case 500 : {setSnackMsg("Internal Server Error");setSeverity("error")};break;
-        //       default : {setSnackMsg("Internal Server Error");setSeverity("error")};break;
-        //     }
-        //     setOpenSnack(true);
-        //     } 
-        //   }))
-        // })
+        CreateProduct(productTitle, productPrice, selectedProductImage,sellerid)
+        .then((res) => {
+            console.log(res);
+            switch(res.status){
+              case 200 : {setSnackMsg("Successfully created product");setSeverity("success");};break;
+              case 201 : {setSnackMsg("Successfully created product");setSeverity("success");};break;
+              case 401 : {setSnackMsg("Error creating product");setSeverity("warning")};break;
+              case 500 : {setSnackMsg("Internal Server Error");setSeverity("error")};break;
+              default : {setSnackMsg("Internal Server Error");setSeverity("error")};break;
+            }
+            setOpenSnack(true);
+            
+        })
         setOpenDailog(false);
       }
     }
+ 
+    
 
     const handlePageChange = (event, value) => {
       event.preventDefault();
@@ -365,12 +372,12 @@ export default function EcommerceShop() {
         <Grid container spacing={3}>
           {
             filteredProducts.length > 0 ? Object.keys(filteredProducts).map(function(key, index) {
-             return <Grid key={filteredProducts[key].id} item xs={12} sm={6} md={3}>
-                    <ProductCard product={filteredProducts[key]} />
+             return <Grid key={filteredProducts[key]._id} item xs={12} sm={6} md={3}>
+                    <ProductCard  id={filteredProducts[key]._id} product={filteredProducts[key]} />
                   </Grid>
             }) : Object.keys(Products).map(function(key, index) {
-              return <Grid key={Products[key].id} item xs={12} sm={6} md={3}>
-              <ProductCard product={Products[key]} />
+              return <Grid key={Products[key]._id} item xs={12} sm={6} md={3}>
+              <ProductCard id={Products[key]._id} product={Products[key]} />
             </Grid>
             }) 
           }

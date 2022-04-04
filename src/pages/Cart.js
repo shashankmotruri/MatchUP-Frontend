@@ -56,25 +56,25 @@ function Cart(props) {
 
     const [search, setSearch] = useState('');
   
-    const Products = useSelector((state) => state.cartReducer);
-
+    const [cartProducts,setCartProducts] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     
-  const [filteredProducts, setFilteredProducts] = useState(Products);
+  const [filteredProducts, setFilteredProducts] = useState(cartProducts);
 
     useEffect(() => {
-        let userId = localStorage.getItem('userId') ? parseInt(localStorage.getItem('userId')) : 1; 
+        let userId = localStorage.getItem('userId'); 
         GetCartProducts(userId)
-        .then((user) => {
+        .then((res) => {
+          setCartProducts(res.cartProducts)
           let price = 0;
-          for(let i = 0; i < user.CartProducts.length;i++){
-            price += parseInt(user.CartProducts[i].quantity)*parseInt(user.CartProducts[i].price);
+          for(let i = 0; i < res.cartProducts.length;i++){
+            price += parseInt(res.cartProducts[i].quantity)*parseInt(res.cartProducts[i].price);
           }
           setTotalPrice(price);
         })
       if (search) {
         console.log(search);
-        const reqData = Object.values(Products).map((product) => {
+        const reqData = Object.values(cartProducts).map((product) => {
           if( product.name.toLowerCase().indexOf(search.toLowerCase()) >= 0 ) {
             return product;
           };
@@ -86,7 +86,7 @@ function Cart(props) {
             return false;
           })
         );
-      } else setFilteredProducts(Products);
+      } else setFilteredProducts(cartProducts);
     });
 
   return (
@@ -129,12 +129,12 @@ function Cart(props) {
         <Grid container spacing={3}>
           {
             filteredProducts.length > 0 ? Object.keys(filteredProducts).map(function(key, index) {
-             return <Grid key={filteredProducts[key].id} item xs={12} sm={6} md={3}>
-                    <CartCard product={filteredProducts[key]} />
+             return <Grid key={filteredProducts[key]._id} item xs={12} sm={6} md={3}>
+                    <CartCard  id={filteredProducts[key]._id} product={filteredProducts[key]} />
                   </Grid>
-            }) : Object.keys(Products).map(function(key, index) {
-              return <Grid key={Products[key].id} item xs={12} sm={6} md={3}>
-              <CartCard product={Products[key]} />
+            }) : Object.keys(cartProducts).map(function(key, index) {
+              return <Grid key={cartProducts[key]._id} item xs={12} sm={6} md={3}>
+              <CartCard id={cartProducts[key]._id} product={cartProducts[key]} />
             </Grid>
             }) 
           }

@@ -35,14 +35,14 @@ const RootStyle = styled('div')(({ theme }) => ({
 function CartWidget(props) {
   const [cartNumber ,setCartNumber] = useState(0);
   useEffect(() => {
-    let userId = localStorage.getItem('userId') ? parseInt(localStorage.getItem('userId')) : 1; 
+    let userId = localStorage.getItem('userId'); 
     GetCartProducts(userId)
-    .then((user) => {
+    .then((res) => {
      
-      props.upadteCartItems(user.CartProducts);
+      props.upadteCartItems(res.cartProducts);
       let number = 0;
-      for(let i = 0; i < user.CartProducts.length;i++){
-        number += parseInt(user.CartProducts[i].quantity);
+      for(let i = 0; i < res.cartProducts.length;i++){
+        number += parseInt(res.cartProducts[i].quantity);
       }
       setCartNumber(number);
     })

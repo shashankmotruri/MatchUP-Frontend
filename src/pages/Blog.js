@@ -22,10 +22,24 @@ import Page from '../components/Page';
 import { BlogPostCard , FavouriteWidget } from '../components/_dashboard/blog';
 import { connect } from 'react-redux';
 import {CreateBlog , GetBlogs} from '../APIcalls/Blog';
-
+import Paper from '@mui/material/Paper';
 
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
+
+const Input = styled('input')({
+  display: 'none',
+});
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+  boxShadow: 'none !important'
+}));
+
 // ----------------------------------------------------------------------
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -79,7 +93,7 @@ function Blog(props) {
     vertical: 'top',
     horizontal: 'center',
   });
-
+  const [selectedProductImage, setSelectedProductImage] = useState(null);
   const { vertical, horizontal } = state;
   const [snackMsg, setSnackMsg] = useState("");
   const [severity,setSeverity] = useState("");
@@ -111,43 +125,36 @@ function Blog(props) {
     } else SetFilteredBlogs(AllBlogs);
 
   },[serachValue])
-
+  let sellerid = localStorage.getItem('userId');
   const SaveBlog = (e) => {
     e.preventDefault();
-    if(blogTitle){
-      CreateBlog(blogTitle,blogDescription)
-      .then(() =>{
-        GetBlogs()
-        .then((res => {
-          if(res){
-          props.dispatch({
-            type: "ADD_FETCHED_DATA",
-            payload: res.data
-          })
+    if(blogTitle && blogDescription && selectedProductImage){
+      CreateBlog(blogTitle,blogDescription,selectedProductImage,sellerid)
+      .then((res) =>{
+        console.log(res);
           switch(res.status){
             case 200 : {setSnackMsg("Successfully created blog");setSeverity("success");};break;
+            case 201 : {setSnackMsg("Successfully created blog");setSeverity("success");};break;
             case 401 : {setSnackMsg("Error creating blog");setSeverity("warning")};break;
             case 500 : {setSnackMsg("Internal Server Error");setSeverity("error")};break;
             default : {setSnackMsg("Internal Server Error");setSeverity("error")};break;
           }
           setOpenSnack(true);
-        }
-        }))
       })
     }
     setOpenDailog(false);
   }
 
-  const handleMoreBlogs = () => {
-    setTotalBlogs(totalBlogs + 11);
-    GetBlogs(totalBlogs)
-    .then((res => {
-      props.dispatch({
-        type: "ADD_FETCHED_DATA",
-        payload: res.data
-      })
-    }))
-  }
+  // const handleMoreBlogs = () => {
+  //   setTotalBlogs(totalBlogs + 11);
+  //   GetBlogs(totalBlogs)
+  //   .then((res => {
+  //     props.dispatch({
+  //       type: "ADD_FETCHED_DATA",
+  //       payload: res.data
+  //     })
+  //   }))
+  // }
 
 
   const onSort = (e) => {
@@ -213,7 +220,22 @@ function Blog(props) {
             onChange={(e) => setBlogDescription(e.target.value)}
             inputProps={{ minLength: 50 }}
           />
-
+          <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+            <Grid item xs={12}>
+              <Item>
+                <label htmlFor="contained-button-file">
+                  <Input accept="image/*" id="contained-button-file" multiple type="file"  onChange={e => setSelectedProductImage(e.target.files[0])}/>
+                  <Button variant="contained" component="span">
+                    Upload Image
+                  </Button>
+                  <span>{(selectedProductImage) ? selectedProductImage.name : <label for="icon-button-file">
+                    Upload Product Picture
+                  </label>}</span>
+                </label>
+              </Item>
+            </Grid>
+          
+          </Grid>
         </DialogContent>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
             <Button onClick={handleClose}>Cancel</Button>
@@ -274,9 +296,9 @@ function Blog(props) {
             <MenuItem key="latest" value="Latest">
                 Latest
               </MenuItem>
-              <MenuItem key="popularity" value="Popularity">
+              {/* <MenuItem key="popularity" value="Popularity">
                 Popularity
-              </MenuItem>
+              </MenuItem> */}
               <MenuItem key="oldest" value="Oldest">
                 Oldest
               </MenuItem>
@@ -287,15 +309,15 @@ function Blog(props) {
         <Grid container spacing={3}>
           {
             filteredBlogs.length > 0 ? Object.keys(filteredBlogs).map(function(key, index) {
-             return <BlogPostCard id={filteredBlogs[key].id} description={filteredBlogs[key].description} cover={filteredBlogs[key].cover} title={filteredBlogs[key].title} avatarUrl={filteredBlogs[key].avatarUrl} key={filteredBlogs[key].id} index={index} />
+             return <BlogPostCard id={filteredBlogs[key]._id} description={filteredBlogs[key].description} cover={filteredBlogs[key].productImage} title={filteredBlogs[key].title} avatarUrl={filteredBlogs[key].avatarUrl} key={filteredBlogs[key].id} index={index} />
             }) : Object.keys(AllBlogs).map(function(key, index) {
-              return <BlogPostCard id={AllBlogs[key].id} cover={AllBlogs[key].cover} description={AllBlogs[key].description} title={AllBlogs[key].title} avatarUrl={AllBlogs[key].avatarUrl} key={AllBlogs[key].id} index={index} />
+              return <BlogPostCard id={AllBlogs[key]._id} cover={AllBlogs[key].productImage} description={AllBlogs[key].description} title={AllBlogs[key].title} avatarUrl={AllBlogs[key].avatarUrl} key={AllBlogs[key].id} index={index} />
             }) 
           }
         </Grid>
 
         <br /> <br /> 
-        <Grid
+        {/* <Grid
           container
           spacing={0}
           direction="column"
@@ -303,7 +325,7 @@ function Blog(props) {
           justify="center"
         > 
         <Button color="primary" type="button" variant="contained" onClick={(e) => handleMoreBlogs(e)} > Load More </Button>
-        </Grid>
+        </Grid> */}
       </Container>
     </Page>
   );

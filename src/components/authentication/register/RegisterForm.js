@@ -59,7 +59,6 @@ function RegisterForm(props) {
     confirmPassword: Yup.string().required('Confirm Password is required'),
     dob: Yup.string().required('DOB is required')
   });
-
   const formik = useFormik({
     initialValues: {
       firstName: '',
@@ -79,7 +78,7 @@ function RegisterForm(props) {
         "confirmPassword":values.confirmPassword,
         "DOB": values.dob,
         // "photoURL" : `/static/mock-images/avatars/avatar_${Math.floor(Math.random() * (24) + 1)}.jpg`,
-        "profileImage" : [],
+        "file" : selectedProfileImage,
         "products" : [],
         "blogs" : [],
         "cartProducts" : [],
@@ -90,15 +89,18 @@ function RegisterForm(props) {
       .then((res) => {
         console.log(res);
         if(res.status === 200){
-          props.postUser(user);
-          localStorage.setItem("userId", res.user.id);
           const curruser = {
+            "id": res.user._id,
             "firstName": res.user.firstName,
             "lastName": res.user.lastName,
             "email": res.user.email,
-            "photoURL": res.user.photoURL,
+            "photoURL": res.user.profileImage,
           }
+          console.log(curruser);
           localStorage.setItem("user", JSON.stringify(curruser));
+          props.postUser(user);
+          localStorage.setItem("userId", res.user._id);
+          localStorage.setItem("PageNo",1)
           setSnackMsg(res.msg);setSeverity("success");
           navigate('/dashboard/app', { replace: true });
         }
@@ -106,6 +108,8 @@ function RegisterForm(props) {
           console.log(res)
           switch(res.status){
             case 401 : {setSnackMsg(res.msg);setSeverity("error")};break;
+            case 404 : {setSnackMsg(res.msg);setSeverity("error")};break;
+            case 422 : {setSnackMsg(res.msg);setSeverity("error")};break;
             case 500 : {setSnackMsg(res.msg);setSeverity("error")};break;
             default : console.log(res);
           }
@@ -216,11 +220,16 @@ function RegisterForm(props) {
           />
 
           <label htmlFor="icon-button-file">
-            <Input accept="image/*" id="icon-button-file" type="file" />
+            <Input accept="image/*" id="icon-button-file" type="file" name="file" required onChange={(e) => setSelectedProfileImage(e.target.files[0])}/>
             <IconButton color="primary" aria-label="upload picture" component="span">
               <PhotoCamera />
             </IconButton>
+            
+            <span>{(selectedProfileImage) ? selectedProfileImage.name : <label for="icon-button-file">
+              Upload Profile Picture
+            </label>}</span>
           </label>
+      
           <LoadingButton
             fullWidth
             size="large"

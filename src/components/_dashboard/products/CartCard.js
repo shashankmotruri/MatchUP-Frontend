@@ -1,3 +1,4 @@
+import React from 'react';
 import {useState} from 'react';
 import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
@@ -14,7 +15,13 @@ import {connect} from 'react-redux';
 import {upadteCartItems} from '../../../redux/actions/cartActions';
 import {RemoveFromCart} from '../../../APIcalls/Products'
 // ----------------------------------------------------------------------
+import MuiAlert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
+// ----------------------------------------------------------------------
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 const ProductImgStyle = styled('img')({
   top: 0,
   width: '100%',
@@ -34,14 +41,36 @@ const InputNumStyle = {
 }
 
 function ShopProductCard({ product ,...props }) {
-  const { name, cover, id, price , quantity} = product;
+  const { name, cover, price , quantity} = product;
+  const {id} = props;
+  const [openSnack ,setOpenSnack] = useState(false);
+  const [state, setState] = useState({
+    vertical: 'top',
+    horizontal: 'center',
+  });
 
+  const { vertical, horizontal } = state;
+  const [snackMsg, setSnackMsg] = useState("");
+  const [severity,setSeverity] = useState("");
+  
+  const handleAlertClose = () => {
+    setOpenSnack(false);
+  };
   const handleRemoveCartItem = (e,id) => {
     e.preventDefault();
-    let userId = localStorage.getItem('userId') || 1;
+    let userId = localStorage.getItem('userId');
     RemoveFromCart(id,userId)
     .then((res) => {
-      console.log(res);
+      if(res){
+        console.log(res);
+        switch(res.status) {
+          case 200 : {setSnackMsg("Successfully removed from cart");setSeverity("success");};break;
+          case 401 : {setSnackMsg("Error removing to cart");setSeverity("warning")};break;
+          case 500 : {setSnackMsg("Internal Server Error");setSeverity("error")};break;
+          default : {setSnackMsg("Error removing to cart");setSeverity("error")};break;
+        }
+        setOpenSnack(true);
+      }
     })
     .catch((err) => {
       console.log(err);

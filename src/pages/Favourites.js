@@ -51,11 +51,11 @@ function Blog(props) {
   const [AllFavouriteBlogs,setAllFavouriteBlogs] = React.useState([])
 
   React.useEffect(() => {
-    let userId = localStorage.getItem('userId') || 1 ;
+    let userId = localStorage.getItem('userId');
     GetFavouriteBlogs(userId)
-    .then((res => {
-        setAllFavouriteBlogs(res.data.Favourites);
-    }))
+    .then((res) => {
+        setAllFavouriteBlogs(res.data.favouriteBlogs);
+    })
     if (serachValue) {
       const reqData = AllFavouriteBlogs.map((blog, index) => {
         if( blog.title.toLowerCase().indexOf(serachValue.toLowerCase()) >= 0 ) {
@@ -109,7 +109,7 @@ function Blog(props) {
         <Grid container spacing={3}>
           {
             AllFavouriteBlogs.length > 0 ? Object.keys(AllFavouriteBlogs).map(function(key, index) {
-              return <FavouriteBlogPostCard id={AllFavouriteBlogs[key].id} cover={AllFavouriteBlogs[key].cover} description={AllFavouriteBlogs[key].description} title={AllFavouriteBlogs[key].title} avatarUrl={AllFavouriteBlogs[key].avatarUrl} key={AllFavouriteBlogs[key].id} index={index} />
+              return <FavouriteBlogPostCard id={AllFavouriteBlogs[key]._id} cover={AllFavouriteBlogs[key].productImage} description={AllFavouriteBlogs[key].description} title={AllFavouriteBlogs[key].title} avatarUrl={AllFavouriteBlogs[key].avatarUrl} key={AllFavouriteBlogs[key].id} index={index} />
             }) : null
           }
         </Grid>

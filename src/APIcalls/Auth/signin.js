@@ -25,20 +25,20 @@ import {API_URL} from '../Backend_URL';
 //  }
 
 export default async function Signin(user){
-    return ({status: 200,msg : 'User Sucessfully Signed In'});
-    // if(!user.email){
-    //     return ({status: 401,msg : 'Please Enter all input fields!'});
-    // }
-  
-    // if(!isuserExists(user.email)){
-    //     return ({status: 401,msg : 'User does not exist. Please Sign Up!'}); 
-    // }
-    // const users = await GetUsers();
+    // return ({status: 200,msg : 'User Sucessfully Signed In'});
+    if(!user.email || !user.password){
+        return ({status: 401,msg : 'Please Enter all input fields!'});
+    }
+    return await axios.post(`${API_URL}/users/signin`,user)
+    .then((response) => {
+        console.log(response);
+        if(response.status === 200){
+        return ({status: response.status,msg : 'User Sucessfully Signed In',user : response.data.user});
+        }
+    })
+    .catch((error) => {
+        console.log(error.response);
+        return ({status: error.response.status,msg: error.response.data.message})
+    })
 
-    // for(let i = 0; i < users.length; i++) {
-    //     if(users[i].email === user.email && users[i].password === user.password) {
-    //         return ({status: 200,msg : 'User Sucessfully Signed In',user : users[i]});
-    //     }
-    // }
-    // return ({status: 401,msg : 'User does not exist. Please Sign Up!'}); 
 }

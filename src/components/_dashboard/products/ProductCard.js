@@ -40,8 +40,8 @@ const InputNumStyle = {
 }
 
 function ShopProductCard({ product ,...props }) {
-  const { name, cover, id, price} = product;
-
+  const { name, cover, price} = product;
+  const { id} = props;
   const [showProduct,setShowProduct] = useState(false);
   const [quantity,setQuantity] = useState(1);
   const handleClose = () => {
@@ -65,12 +65,11 @@ function ShopProductCard({ product ,...props }) {
 
   const AddToCart = (event,productId,quantity) => {
     event.preventDefault();
-    let userId = localStorage.getItem("userId") ? localStorage.getItem("userId") : 1;
+    let userId = localStorage.getItem("userId");
     AddProductToCart(productId, quantity,userId)
     .then((res) => {
       if(res){
         console.log(res);
-        props.upadteCartItems(res.data);
         switch(res.status) {
           case 200 : {setSnackMsg("Successfully added to cart");setSeverity("success");};break;
           case 401 : {setSnackMsg("Error adding to cart");setSeverity("warning")};break;

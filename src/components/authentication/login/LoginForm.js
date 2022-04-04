@@ -69,22 +69,25 @@ function LoginForm(props) {
       .then(res=>{
         console.log(res);
         if(res.status === 200){
-          props.postUser(res.user);
-          localStorage.setItem("userId", res.user.id);
-          console.log(res.user)
           const curruser = {
+            "id": res.user._id,
             "firstName": res.user.firstName,
             "lastName": res.user.lastName,
             "email": res.user.email,
-            "photoURL": res.user.photoURL,
+            "photoURL": res.user.profileImage,
           }
           localStorage.setItem("user", JSON.stringify(curruser));
+          props.postUser(res.user);
+          localStorage.setItem("userId", res.user._id);
+          localStorage.setItem("PageNo",1)
           setSnackMsg(res.msg);setSeverity("success");
           navigate('/dashboard/app', { replace: true });
         }
         else{
           switch(res.status){
             case 401 : {setSnackMsg(res.msg);setSeverity("error")};break;
+            case 422 : {setSnackMsg(res.msg);setSeverity("error")};break;
+            case 404 : {setSnackMsg(res.msg);setSeverity("error")};break;
             case 500 : {setSnackMsg(res.msg);setSeverity("error")};break;
             default : console.log(res);
           }

@@ -96,15 +96,15 @@ export default function BlogPostCard(props) {
 
   const handleFavouriteBlog = async (e,id) => {
     e.preventDefault();
-    const currBlog = await axios.get(`http://localhost:5000/blogs/${id}`)
-    let userId = localStorage.getItem('userId') || 1
-    AddBlogToFavourite(currBlog.data,parseInt(userId))
+    let userId = localStorage.getItem('userId');
+    AddBlogToFavourite(userId,id)
     .then((res) => {
+      console.log(res)
       switch(res.status) {
-        case 200 : {setSnackMsg(res.msg);setSeverity("success")};break;
-        case 401 : {setSnackMsg(res.msg);setSeverity("warning")};break;
-        case 500 : {setSnackMsg(res.msg);setSeverity("error")};break;
-        default : {setSnackMsg(res.msg);setSeverity("error")};break;
+        case 200 : {setSnackMsg(res.data.message);setSeverity("success")};break;
+        case 401 : {setSnackMsg(res.data.message);setSeverity("warning")};break;
+        case 500 : {setSnackMsg("Error Adding Blog to Favourites");setSeverity("error")};break;
+        default : {setSnackMsg(res.data.message);setSeverity("error")};break;
       }
       setOpenSnack(true);
     })

@@ -35,10 +35,10 @@ const RootStyle = styled('div')(({ theme }) => ({
 function FavouriteWidget(props) {
   const [cartNumber ,setCartNumber] = useState(0);
   useEffect(() => {
-    let userId = localStorage.getItem('userId') ? parseInt(localStorage.getItem('userId')) : 1; 
+    let userId = localStorage.getItem('userId'); 
     GetFavouriteBlogs(userId)
     .then((res) => {
-      setCartNumber(res.data.Favourites.length);
+      setCartNumber(res.data.favouriteBlogs.length);
     })
   
   })

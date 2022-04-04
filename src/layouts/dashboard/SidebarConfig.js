@@ -15,7 +15,7 @@ const sidebarConfig = [
   },
   {
     title: 'product',
-    path: '/dashboard/products',
+    path: '/dashboard/products/1',
     icon: getIcon(shoppingBagFill)
   },
   {
