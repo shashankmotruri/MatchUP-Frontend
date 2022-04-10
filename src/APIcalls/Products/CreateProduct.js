@@ -13,8 +13,10 @@ export default async function CreateBlog(productname,price,image,sellerId){
         method: "post",
         url:`${API_URL}/products`,
         data: bodyFormData,
-        headers: { "Content-Type": "multipart/form-data" },
-        'x-auth-token': sessionStorage.getItem('token')
+        headers: { 
+          "Content-Type": "multipart/form-data" ,
+          'x-auth-token': sessionStorage.getItem('token')
+        },
       })
         .then(function (response) {
           //handle success

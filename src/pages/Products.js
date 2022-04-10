@@ -6,6 +6,7 @@ import {useNavigate} from 'react-router-dom';
 import Page from '../components/Page';
 import {
   ProductCard,
+  UserProductCard,
   ProductCartWidget
 } from '../components/_dashboard/products';
 import { Grid ,Button} from '@material-ui/core';
@@ -304,7 +305,6 @@ export default function EcommerceShop() {
           Sell Products by sharing about their product and the price you want to sell it at.
           </DialogContentText>
           <TextField
-            autoFocus
             required
             margin="dense"
             id="name"
@@ -374,11 +374,13 @@ export default function EcommerceShop() {
             (
               filteredProducts.length > 0 ? Object.keys(filteredProducts).map(function(key, index) {
               return <Grid key={filteredProducts[key]._id} item xs={12} sm={6} md={3}>
-                      <ProductCard  id={filteredProducts[key]._id} product={filteredProducts[key]} />
+                {/* {console.log(filteredProducts[key].sellerUserId +"  "+sellerid)} */}
+                     {(filteredProducts[key].sellerUserId === sellerid )? <UserProductCard  id={filteredProducts[key]._id} product={filteredProducts[key]} /> : <ProductCard  id={filteredProducts[key]._id} product={filteredProducts[key]} />}
                     </Grid>
               }) : Object.keys(Products).map(function(key, index) {
-                return <Grid key={Products[key]._id} item xs={12} sm={6} md={3}>
-                <ProductCard id={Products[key]._id} product={Products[key]} />
+                return <Grid key={Products[key].sellerUserId} item xs={12} sm={6} md={3}>
+                  {/* {console.log(Products[key].sellerUserId+ "  "+sellerid)} */}
+                {(Products[key].sellerUserId === sellerid) ? <UserProductCard id={Products[key]._id} product={Products[key]} /> : <ProductCard id={Products[key]._id} product={Products[key]} /> }
               </Grid>
               }) 
             ) : (Products.length == 0) ? null : <div style={{ alignItems: "center", display: "flex", justifyContent: "center", height: "50vh", width: "100vw" }}>

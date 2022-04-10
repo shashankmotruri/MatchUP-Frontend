@@ -8,10 +8,7 @@ export default async function CreateBlog(blogtitle,blogDescription,image,selleri
     bodyFormData.append('description', blogDescription);
     bodyFormData.append('sellerUserId',sellerid );
     bodyFormData.append('file', image);
-    const headers = {
-      'Content-Type': 'application/json',
-      'x-auth-token': sessionStorage.getItem('token')
-  }
+
     return await axios({
         method: "post",
         url:`${API_URL}/blogs`,

@@ -80,7 +80,7 @@ function ShopProductCard({ product ,...props }) {
   }
   return (
     <Card>
-          <Snackbar
+          {/* <Snackbar
           anchorOrigin={{ vertical, horizontal }}
           open={openSnack}
           onClose={handleAlertClose}
@@ -91,7 +91,7 @@ function ShopProductCard({ product ,...props }) {
            <Alert onClose={handleAlertClose} severity={severity} sx={{ width: '100%' }}>
               {snackMsg}
             </Alert>
-        </Snackbar>
+        </Snackbar> */}
       <Box sx={{ pt: '100%', position: 'relative' }}>
         <ProductImgStyle alt={name} src={cover} />
       </Box>

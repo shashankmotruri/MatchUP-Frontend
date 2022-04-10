@@ -1,4 +1,5 @@
 export { default as ProductCard } from './ProductCard';
+export { default as UserProductCard } from './UserProductCard';
 export { default as CartCard } from './CartCard';
 export { default as DashboardComponent } from './DashboardComponent';
 export { default as DashboardCard } from './DashboardCard';

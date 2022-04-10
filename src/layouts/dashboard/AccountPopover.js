@@ -127,7 +127,7 @@ function AccountPopover(props) {
         ))}
 
         <Box sx={{ p: 2, pt: 1.5 }}>
-          <Button fullWidth color="inherit" variant="outlined" onClick={(e)=>{e.preventDefault();localStorage.removeItem("userId");localStorage.removeItem("user");setRedirectToLogin(true)}}>
+          <Button fullWidth color="inherit" variant="outlined" onClick={(e)=>{e.preventDefault();localStorage.removeItem("userId");localStorage.removeItem("user");sessionStorage.removeItem("token");setRedirectToLogin(true)}}>
             Logout
           </Button>
         </Box>

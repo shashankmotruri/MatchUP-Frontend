@@ -3,11 +3,13 @@ import {API_URL} from '../Backend_URL';
 
 export default async function RemoveFromCart(productId,userId){
     try {
-        const headers = {
-            'Content-Type': 'application/json',
-            'x-auth-token': sessionStorage.getItem('token')
-        }
-    return await axios.delete(`${API_URL}/users/cartProducts/${userId}/${productId}`,{headers: headers}).then(response => {return response});
+        console.log(productId + "  " + userId);
+        return await axios({
+            method: "delete",
+            url:`${API_URL}/users/cartProducts/${userId}/${productId}`,
+            headers: {'x-auth-token': sessionStorage.getItem('token') },
+        })
+        .then(response => {return response});
     } catch (error) {
         return ({status: 404, msg: error.message});
     }
