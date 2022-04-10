@@ -6,6 +6,7 @@ import LogoOnlyLayout from './layouts/LogoOnlyLayout';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import DashboardApp from './pages/DashboardApp';
+import Profile from './pages/Profile';
 import Products from './pages/Products';
 import Blog from './pages/Blog';
 import NotFound from './pages/Page404';
@@ -21,6 +22,7 @@ export default function Router() {
       children: [
         { path: '', element:  <Navigate to="/dashboard/app" replace />},
         { path: 'app', element:  <DashboardApp />},
+        { path: 'profile', element:  <Profile />},
         { path: 'products/:id', element: <Products />},
         { path: 'cart', element: <Cart />},
         { path: 'favourites', element: <Favourites />},

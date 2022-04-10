@@ -74,6 +74,8 @@ function LoginForm(props) {
             "firstName": res.user.firstName,
             "lastName": res.user.lastName,
             "email": res.user.email,
+            "DOB": res.user.DOB,
+            "phone": res.user.phone,
             "photoURL": res.user.profileImage,
           }
           localStorage.setItem("user", JSON.stringify(curruser));
@@ -153,14 +155,14 @@ function LoginForm(props) {
         </Stack>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-          <FormControlLabel
+          {/* <FormControlLabel
             control={<Checkbox {...getFieldProps('remember')} checked={values.remember} />}
             label="Remember me"
           />
 
           <Link component={RouterLink} variant="subtitle2" to="#">
             Forgot password?
-          </Link>
+          </Link> */}
         </Stack>
 
         <LoadingButton

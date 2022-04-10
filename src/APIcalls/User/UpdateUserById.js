@@ -1,15 +1,15 @@
 import axios from 'axios';
 import {API_URL} from '../Backend_URL';
 
-export default async function Signin(user){
-    if(!user.email || !user.password){
-        return ({status: 401,msg : 'Please Enter all input fields!'});
+export default async function UpdateUserById(userId,updatedUser){
+    if(!userId){
+        return ({status: 401,msg : 'User Not Found'});
     }
-    return await axios.post(`${API_URL}/users/signin`,user)
+    return await axios.patch(`${API_URL}/users/${userId}`,updatedUser)
     .then((response) => {
         console.log(response);
         if(response.status === 200){
-        return ({status: response.status,msg : 'User Sucessfully Signed In',user : response.data.user});
+        return ({status: response.status,msg : 'User Updated Sucessfully Fetched',user : response.data});
         }
     })
     .catch((error) => {

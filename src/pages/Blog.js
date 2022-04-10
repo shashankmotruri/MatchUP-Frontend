@@ -23,6 +23,7 @@ import { BlogPostCard , FavouriteWidget } from '../components/_dashboard/blog';
 import { connect } from 'react-redux';
 import {CreateBlog , GetBlogs} from '../APIcalls/Blog';
 import Paper from '@mui/material/Paper';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
@@ -307,25 +308,16 @@ function Blog(props) {
 
         </Stack>
         <Grid container spacing={3}>
-          {
-            filteredBlogs.length > 0 ? Object.keys(filteredBlogs).map(function(key, index) {
+          {AllBlogs.length>0?
+            (filteredBlogs.length > 0 ? Object.keys(filteredBlogs).map(function(key, index) {
              return <BlogPostCard id={filteredBlogs[key]._id} description={filteredBlogs[key].description} cover={filteredBlogs[key].productImage} title={filteredBlogs[key].title} avatarUrl={filteredBlogs[key].avatarUrl} key={filteredBlogs[key].id} index={index} />
             }) : Object.keys(AllBlogs).map(function(key, index) {
               return <BlogPostCard id={AllBlogs[key]._id} cover={AllBlogs[key].productImage} description={AllBlogs[key].description} title={AllBlogs[key].title} avatarUrl={AllBlogs[key].avatarUrl} key={AllBlogs[key].id} index={index} />
-            }) 
+            }) ) : <div style={{ alignItems: "center", display: "flex", justifyContent: "center", height: "50vh", width: "100vw" }}>
+            <CircularProgress />
+          </div>
           }
         </Grid>
-
-        <br /> <br /> 
-        {/* <Grid
-          container
-          spacing={0}
-          direction="column"
-          alignItems="center"
-          justify="center"
-        > 
-        <Button color="primary" type="button" variant="contained" onClick={(e) => handleMoreBlogs(e)} > Load More </Button>
-        </Grid> */}
       </Container>
     </Page>
   );

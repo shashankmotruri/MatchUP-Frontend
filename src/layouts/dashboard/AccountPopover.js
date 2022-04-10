@@ -4,6 +4,7 @@ import homeFill from '@iconify/icons-eva/home-fill';
 import { Link as RouterLink, Navigate } from 'react-router-dom';
 import shoppingCartFill from '@iconify/icons-eva/shopping-cart-fill';
 import heartFilled from '@iconify/icons-ant-design/heart-filled';
+import userFilled from '@iconify/icons-carbon/user-filled';
 // material
 import { alpha } from '@material-ui/core/styles';
 import { Button, Box, Divider, MenuItem, Typography, Avatar, IconButton } from '@material-ui/core';
@@ -19,6 +20,11 @@ const MENU_OPTIONS = [
     label: 'Home',
     icon: homeFill,
     linkTo: '/dashboard'
+  },
+  {
+    label: 'Profile',
+    icon: userFilled,
+    linkTo: '/dashboard/profile'
   },
   {
     label: 'Cart',

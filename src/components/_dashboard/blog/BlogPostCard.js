@@ -62,6 +62,11 @@ const CoverImgStyle = styled('img')({
   objectFit: 'cover',
   position: 'absolute'
 });
+const DailogImgStyle = styled('img')({
+  width: '100%',
+  height: '100%',
+  maxHeight: '400px'
+});
 
 // ----------------------------------------------------------------------
 
@@ -112,7 +117,9 @@ export default function BlogPostCard(props) {
 
   return (
     <Grid item xs={12} sm={latestPostLarge ? 12 : 6} md={latestPostLarge ? 6 : 3}>
-      <Dialog open={showBlog}>
+      <Dialog open={showBlog} fullWidth maxWidth="sm">
+        <DailogImgStyle alt={title} src={cover} />
+
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
           <DialogContentText>

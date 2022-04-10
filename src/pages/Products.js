@@ -18,7 +18,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-
+import CircularProgress from '@mui/material/CircularProgress';
 import {GetProducts,CreateProduct,GetAllProducts} from '../APIcalls/Products'
 
 import searchFill from '@iconify/icons-eva/search-fill';
@@ -169,7 +169,7 @@ export default function EcommerceShop() {
       .then((res => {
         if(res){
         console.log(res.data);
-        setTotalPages(Math.ceil(res.data.length/2));
+        setTotalPages(Math.ceil(res.data.length/8));
         // dispatch({
         //   type: "FETCH_POST_REQUEST",
         //   payload: res.data
@@ -370,17 +370,21 @@ export default function EcommerceShop() {
         </Stack>
 
         <Grid container spacing={3}>
-          {
-            filteredProducts.length > 0 ? Object.keys(filteredProducts).map(function(key, index) {
-             return <Grid key={filteredProducts[key]._id} item xs={12} sm={6} md={3}>
-                    <ProductCard  id={filteredProducts[key]._id} product={filteredProducts[key]} />
-                  </Grid>
-            }) : Object.keys(Products).map(function(key, index) {
-              return <Grid key={Products[key]._id} item xs={12} sm={6} md={3}>
-              <ProductCard id={Products[key]._id} product={Products[key]} />
-            </Grid>
-            }) 
-          }
+          { Products.length > 0 ?
+            (
+              filteredProducts.length > 0 ? Object.keys(filteredProducts).map(function(key, index) {
+              return <Grid key={filteredProducts[key]._id} item xs={12} sm={6} md={3}>
+                      <ProductCard  id={filteredProducts[key]._id} product={filteredProducts[key]} />
+                    </Grid>
+              }) : Object.keys(Products).map(function(key, index) {
+                return <Grid key={Products[key]._id} item xs={12} sm={6} md={3}>
+                <ProductCard id={Products[key]._id} product={Products[key]} />
+              </Grid>
+              }) 
+            ) :  <div style={{ alignItems: "center", display: "flex", justifyContent: "center", height: "50vh", width: "100vw" }}>
+            <CircularProgress />
+          </div>
+        }
         </Grid>
         <ProductCartWidget />
         <br /><br /> <br /><br />

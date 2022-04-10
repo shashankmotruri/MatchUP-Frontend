@@ -28,7 +28,8 @@ import {API_URL} from '../Backend_URL';
 
 export default async function SignUp(user) {
     // return ({status: 200,msg : 'User Sucessfully Signed Up'})
-    if(!user.email || !user.password || !user.DOB || !user.firstName || !user.lastName || !user.file){
+    console.log(user);
+    if(!user.email || !user.password || !user.DOB || !user.firstName || !user.lastName || !user.file || !user.phone){
         console.log("Please Enter all input fields!")
         return ({status: 401,msg : 'Please Enter all input fields!'});
     }
@@ -50,6 +51,7 @@ export default async function SignUp(user) {
     bodyFormData.append('email', user.email);
     bodyFormData.append('password', user.password);
     bodyFormData.append('DOB', user.DOB);
+    bodyFormData.append('phone', user.phone);
     bodyFormData.append('file', user.file);
     
     return await axios({

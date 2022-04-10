@@ -57,7 +57,8 @@ function RegisterForm(props) {
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     password: Yup.string().required('Password is required'),
     confirmPassword: Yup.string().required('Confirm Password is required'),
-    dob: Yup.string().required('DOB is required')
+    dob: Yup.string().required('DOB is required'),
+    phone: Yup.string().required('Phone Number is required'),
   });
   const formik = useFormik({
     initialValues: {
@@ -66,7 +67,8 @@ function RegisterForm(props) {
       email: '',
       password: '',
       confirmPassword:'',
-      dob:''
+      dob:'',
+      phone:''
     },
     validationSchema: RegisterSchema,
     onSubmit: (values, actions) => {
@@ -77,7 +79,7 @@ function RegisterForm(props) {
         "password": values.password,
         "confirmPassword":values.confirmPassword,
         "DOB": values.dob,
-        // "photoURL" : `/static/mock-images/avatars/avatar_${Math.floor(Math.random() * (24) + 1)}.jpg`,
+        "phone": values.phone,
         "file" : selectedProfileImage,
         "products" : [],
         "blogs" : [],
@@ -94,6 +96,8 @@ function RegisterForm(props) {
             "firstName": res.user.firstName,
             "lastName": res.user.lastName,
             "email": res.user.email,
+            "DOB": res.user.DOB,
+            "phone": res.user.phone,
             "photoURL": res.user.profileImage,
           }
           console.log(curruser);
@@ -206,6 +210,18 @@ function RegisterForm(props) {
             helperText={touched.confirmPassword && errors.confirmPassword}
           />
 
+          <TextField
+              fullWidth
+              id="phone"
+              label="Phone"
+              type="number"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              {...getFieldProps('phone')}
+              error={Boolean(touched.phone && errors.phone)}
+              helperText={touched.phone && errors.phone}
+          />
           <TextField
               fullWidth
               id="date"
