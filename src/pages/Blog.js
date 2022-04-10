@@ -125,7 +125,7 @@ function Blog(props) {
       );
     } else SetFilteredBlogs(AllBlogs);
 
-  },[serachValue])
+  },[])
   let sellerid = localStorage.getItem('userId');
   const SaveBlog = (e) => {
     e.preventDefault();
@@ -145,17 +145,6 @@ function Blog(props) {
     }
     setOpenDailog(false);
   }
-
-  // const handleMoreBlogs = () => {
-  //   setTotalBlogs(totalBlogs + 11);
-  //   GetBlogs(totalBlogs)
-  //   .then((res => {
-  //     props.dispatch({
-  //       type: "ADD_FETCHED_DATA",
-  //       payload: res.data
-  //     })
-  //   }))
-  // }
 
 
   const onSort = (e) => {
@@ -198,7 +187,6 @@ function Blog(props) {
           Add Blogs where users can spend their free time reading about fresh arrivals, new products, trending sales etc...
           </DialogContentText>
           <TextField
-            autoFocus
             margin="dense"
             id="name"
             label="Title"
@@ -256,7 +244,7 @@ function Blog(props) {
             onClick={() => {setOpenDailog(true)}}
             startIcon={<Icon icon={plusFill} />}
           >
-            New Post
+            New Blog
           </Button>
         </Stack>
         <FavouriteWidget />

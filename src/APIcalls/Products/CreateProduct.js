@@ -3,16 +3,6 @@ import { mockImgProduct } from '../../utils/mockImages';
 import {API_URL} from '../Backend_URL';
 
 export default async function CreateBlog(productname,price,image,sellerId){
-    // const product = {
-    //     // "cover": mockImgProduct(Math.floor(Math.random() * (24)  + 1)),
-    //     "cover": image,
-    //     "name": productname,
-    //     "price": price
-    // }
-    // if(productname && price) {
-    //     return await axios.post(`${API_URL}/products`,product)
-    // }
-    // return null;
     let bodyFormData = new FormData();
     bodyFormData.append('name', productname);
     bodyFormData.append('price', price);
@@ -24,6 +14,7 @@ export default async function CreateBlog(productname,price,image,sellerId){
         url:`${API_URL}/products`,
         data: bodyFormData,
         headers: { "Content-Type": "multipart/form-data" },
+        'x-auth-token': sessionStorage.getItem('token')
       })
         .then(function (response) {
           //handle success

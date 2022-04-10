@@ -106,7 +106,7 @@ function RegisterForm(props) {
           localStorage.setItem("userId", res.user._id);
           localStorage.setItem("PageNo",1)
           setSnackMsg(res.msg);setSeverity("success");
-          navigate('/dashboard/app', { replace: true });
+          navigate('/login ', { replace: true });
         }
         else{
           console.log(res)

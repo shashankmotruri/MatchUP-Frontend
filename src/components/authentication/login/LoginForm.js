@@ -78,10 +78,12 @@ function LoginForm(props) {
             "phone": res.user.phone,
             "photoURL": res.user.profileImage,
           }
+          console.log(res)
           localStorage.setItem("user", JSON.stringify(curruser));
           props.postUser(res.user);
+          sessionStorage.setItem("token", res.token);
           localStorage.setItem("userId", res.user._id);
-          localStorage.setItem("PageNo",1)
+          localStorage.setItem("PageNo",1);
           setSnackMsg(res.msg);setSeverity("success");
           navigate('/dashboard/app', { replace: true });
         }

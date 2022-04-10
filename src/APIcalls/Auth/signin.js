@@ -9,7 +9,7 @@ export default async function Signin(user){
     .then((response) => {
         console.log(response);
         if(response.status === 200){
-        return ({status: response.status,msg : 'User Sucessfully Signed In',user : response.data.user});
+        return ({status: response.status,msg : 'User Sucessfully Signed In',user : response.data.user,token: response.data.token});
         }
     })
     .catch((error) => {

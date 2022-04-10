@@ -41,7 +41,8 @@ const InputNumStyle = {
 }
 
 function ShopProductCard({ product ,...props }) {
-  const { name, cover, price , quantity} = product;
+  const { name, cover, price} = product;
+  const {quantity} = props;
   const {id} = props;
   const [openSnack ,setOpenSnack] = useState(false);
   const [state, setState] = useState({

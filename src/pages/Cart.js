@@ -53,25 +53,23 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 
 function Cart(props) {
-
     const [search, setSearch] = useState('');
-  
     const [cartProducts,setCartProducts] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     
-  const [filteredProducts, setFilteredProducts] = useState(cartProducts);
+    const [filteredProducts, setFilteredProducts] = useState(cartProducts);
+    let userId = localStorage.getItem('userId'); 
 
     useEffect(() => {
-        let userId = localStorage.getItem('userId'); 
-        GetCartProducts(userId)
-        .then((res) => {
-          setCartProducts(res.cartProducts)
-          let price = 0;
-          for(let i = 0; i < res.cartProducts.length;i++){
-            price += parseInt(res.cartProducts[i].quantity)*parseInt(res.cartProducts[i].price);
-          }
-          setTotalPrice(price);
-        })
+      GetCartProducts(userId)
+      .then((res) => {
+        setCartProducts(res.cartProducts);
+        let price = 0;
+        for(let i = 0; i < res.cartProducts.length;i++){
+          price += parseInt(res.cartProducts[i].quantity)*parseInt(res.cartProducts[i].product.price);
+        }
+        setTotalPrice(price);
+      })
       if (search) {
         console.log(search);
         const reqData = Object.values(cartProducts).map((product) => {
@@ -87,7 +85,7 @@ function Cart(props) {
           })
         );
       } else setFilteredProducts(cartProducts);
-    });
+    },[]);
 
   return (
     <Page title="Products">
@@ -129,13 +127,13 @@ function Cart(props) {
         <Grid container spacing={3}>
           {
             filteredProducts.length > 0 ? Object.keys(filteredProducts).map(function(key, index) {
-             return <Grid key={filteredProducts[key]._id} item xs={12} sm={6} md={3}>
-                    <CartCard  id={filteredProducts[key]._id} product={filteredProducts[key]} />
+             return <Grid key={filteredProducts[key].product._id} item xs={12} sm={6} md={3}>
+                    <CartCard  id={filteredProducts[key].product._id} product={filteredProducts[key].product} quantity={filteredProducts[key].quantity} />
                   </Grid>
             }) : Object.keys(cartProducts).map(function(key, index) {
-              return <Grid key={cartProducts[key]._id} item xs={12} sm={6} md={3}>
-              <CartCard id={cartProducts[key]._id} product={cartProducts[key]} />
-            </Grid>
+              return <Grid key={cartProducts[key].product._id} item xs={12} sm={6} md={3}>
+              <CartCard id={cartProducts[key].product._id} product={cartProducts[key].product} quantity={cartProducts[key].quantity}/>
+            </Grid> 
             }) 
           }
         </Grid>
