@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React,{ useState } from 'react';
 import {
   Box,
   Button,
@@ -12,6 +12,13 @@ import {
 
 import UpdateUserById from '../../APIcalls/User/UpdateUserById';
 
+import MuiAlert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
+// ----------------------------------------------------------------------
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const  AccountProfileDetails = (props) => {
   const  [user,setUser] = useState(JSON.parse(localStorage.getItem('user')) || null);
@@ -29,11 +36,32 @@ const  AccountProfileDetails = (props) => {
       [event.target.name]: event.target.value
     });
   };
+  const [openSnack ,setOpenSnack] = useState(false);
+  const [state, setState] = useState({
+    vertical: 'top',
+    horizontal: 'center',
+  });
+
+  const { vertical, horizontal } = state;
+  const [snackMsg, setSnackMsg] = useState("");
+  const [severity,setSeverity] = useState("");
+  
+  const handleAlertClose = () => {
+    setOpenSnack(false);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     UpdateUserById(user.id,values)
     .then((res) => {
       console.log(res);
+      switch(res.status) {
+        case 200 : {setSnackMsg(res.msg);setSeverity("success")};break;
+        case 401 : {setSnackMsg(res.msg);setSeverity("warning")};break;
+        case 500 : {setSnackMsg("Error Updating User");setSeverity("error")};break;
+        default : {setSnackMsg(res.msg);setSeverity("error")};break;
+      }
+      setOpenSnack(true);
     })
   }
   return (
@@ -42,6 +70,17 @@ const  AccountProfileDetails = (props) => {
       onSubmit={handleSubmit}
       {...props}
     >
+        <Snackbar
+          anchorOrigin={{ vertical, horizontal }}
+          open={openSnack}
+          onClose={handleAlertClose}
+          autoHideDuration={4000}
+          key={vertical + horizontal}
+        >
+           <Alert onClose={handleAlertClose} severity={severity} sx={{ width: '100%' }}>
+              {snackMsg}
+            </Alert>
+        </Snackbar>
       <Card>
         <CardHeader
           subheader="The information can be edited"

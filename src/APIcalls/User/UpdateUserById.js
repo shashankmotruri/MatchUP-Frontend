@@ -9,7 +9,7 @@ export default async function UpdateUserById(userId,updatedUser){
     .then((response) => {
         console.log(response);
         if(response.status === 200){
-        return ({status: response.status,msg : 'User Updated Sucessfully Fetched',user : response.data});
+        return ({status: response.status,msg : response.data.message,user : response.data.user});
         }
     })
     .catch((error) => {
