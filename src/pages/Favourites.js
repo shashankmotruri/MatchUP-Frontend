@@ -71,7 +71,7 @@ function Blog(props) {
       );
     } else setAllFavouriteBlogs(AllFavouriteBlogs);
 
-  },[serachValue,AllFavouriteBlogs,AllFavouriteBlogs])
+  },[serachValue])
 
   return (
     <Page title="Dashboard: Blog">

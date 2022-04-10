@@ -62,6 +62,7 @@ function ShopProductCard({ product ,...props }) {
     let userId = localStorage.getItem('userId');
     RemoveFromCart(id,userId)
     .then((res) => {
+      console.log(id)
       if(res){
         console.log(res);
         switch(res.status) {
@@ -79,10 +80,22 @@ function ShopProductCard({ product ,...props }) {
   }
   return (
     <Card>
+          <Snackbar
+          anchorOrigin={{ vertical, horizontal }}
+          open={openSnack}
+          onClose={handleAlertClose}
+          autoHideDuration={4000}
+          key={vertical + horizontal}
+          style={{zIndex: "999999"}}
+        >
+           <Alert onClose={handleAlertClose} severity={severity} sx={{ width: '100%' }}>
+              {snackMsg}
+            </Alert>
+        </Snackbar>
       <Box sx={{ pt: '100%', position: 'relative' }}>
         <ProductImgStyle alt={name} src={cover} />
       </Box>
-
+   
       <Stack spacing={2} sx={{ p: 3 }}>
         <Link to="#" color="inherit" underline="hover" component={RouterLink}>
           <Typography variant="subtitle2" noWrap>
@@ -90,7 +103,7 @@ function ShopProductCard({ product ,...props }) {
           </Typography>
         </Link>
 
-
+   
         <Stack direction="row" alignItems="right" justifyContent="space-between">
           <Typography variant="subtitle1">
             <Typography
@@ -122,6 +135,7 @@ function ShopProductCard({ product ,...props }) {
         <Button type="button" color="error" variant="contained" onClick={(e) => handleRemoveCartItem(e,id)}>Remove from Cart</Button>
       
       </Stack>
+      
     </Card>
   );
 }

@@ -125,7 +125,7 @@ function Blog(props) {
       );
     } else SetFilteredBlogs(AllBlogs);
 
-  },[])
+  },[serachValue])
   let sellerid = localStorage.getItem('userId');
   const SaveBlog = (e) => {
     e.preventDefault();
@@ -301,7 +301,7 @@ function Blog(props) {
              return <BlogPostCard id={filteredBlogs[key]._id} description={filteredBlogs[key].description} cover={filteredBlogs[key].productImage} title={filteredBlogs[key].title} avatarUrl={filteredBlogs[key].avatarUrl} key={filteredBlogs[key].id} index={index} />
             }) : Object.keys(AllBlogs).map(function(key, index) {
               return <BlogPostCard id={AllBlogs[key]._id} cover={AllBlogs[key].productImage} description={AllBlogs[key].description} title={AllBlogs[key].title} avatarUrl={AllBlogs[key].avatarUrl} key={AllBlogs[key].id} index={index} />
-            }) ) : <div style={{ alignItems: "center", display: "flex", justifyContent: "center", height: "50vh", width: "100vw" }}>
+            }) ) :(AllBlogs.length === 0) ? null : <div style={{ alignItems: "center", display: "flex", justifyContent: "center", height: "50vh", width: "100vw" }}>
             <CircularProgress />
           </div>
           }

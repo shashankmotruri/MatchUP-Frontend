@@ -381,14 +381,14 @@ export default function EcommerceShop() {
                 <ProductCard id={Products[key]._id} product={Products[key]} />
               </Grid>
               }) 
-            ) :  <div style={{ alignItems: "center", display: "flex", justifyContent: "center", height: "50vh", width: "100vw" }}>
+            ) : (Products.length == 0) ? null : <div style={{ alignItems: "center", display: "flex", justifyContent: "center", height: "50vh", width: "100vw" }}>
             <CircularProgress />
           </div>
         }
         </Grid>
         <ProductCartWidget />
         <br /><br /> <br /><br />
-        <Grid
+       {Products.length === 0 ?null:<Grid
           container
           spacing={0}
           direction="column"
@@ -396,7 +396,7 @@ export default function EcommerceShop() {
           justify="center"
         >
           <Pagination size="large" page={parseInt(currPage)} color="primary" count={totalPages} onChange={handlePageChange} />
-        </Grid>
+        </Grid>}
       </Container>
     </Page>
   );
