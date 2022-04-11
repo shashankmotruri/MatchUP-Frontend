@@ -56,7 +56,19 @@ const  AccountProfileDetails = (props) => {
     .then((res) => {
       console.log(res);
       switch(res.status) {
-        case 200 : {setSnackMsg(res.msg);setSeverity("success")};break;
+        case 200 : {
+          setSnackMsg(res.msg);setSeverity("success");          
+          const curruser = {
+            "id": res.user._id,
+            "firstName": res.user.firstName,
+            "lastName": res.user.lastName,
+            "email": res.user.email,
+            "DOB": res.user.DOB,
+            "phone": res.user.phone,
+            "photoURL": res.user.profileImage,
+          }
+          localStorage.setItem("user",JSON.stringify(curruser));
+        };break;
         case 401 : {setSnackMsg(res.msg);setSeverity("warning")};break;
         case 500 : {setSnackMsg("Error Updating User");setSeverity("error")};break;
         default : {setSnackMsg(res.msg);setSeverity("error")};break;

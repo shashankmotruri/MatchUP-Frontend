@@ -5,7 +5,12 @@ export default async function UpdateUserById(userId,updatedUser){
     if(!userId){
         return ({status: 401,msg : 'User Not Found'});
     }
-    return await axios.patch(`${API_URL}/users/${userId}`,updatedUser)
+    return await axios({
+        method: "patch",
+        url:`${API_URL}/users/${userId}`,
+        headers: {'x-auth-token': sessionStorage.getItem('token') },
+        data : updatedUser
+    })
     .then((response) => {
         console.log(response);
         if(response.status === 200){
@@ -14,7 +19,7 @@ export default async function UpdateUserById(userId,updatedUser){
     })
     .catch((error) => {
         console.log(error.response);
-        return ({status: error.response.status,msg: error.response.data.message})
-    })
+        return ({status: error.response.status,msg: error.response.data})
+    })  
 
 }
