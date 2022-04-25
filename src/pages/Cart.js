@@ -70,21 +70,21 @@ function Cart(props) {
         }
         setTotalPrice(price);
       })
-      if (search) {
-        console.log(search);
-        const reqData = Object.values(cartProducts).map((product) => {
-          if( product.name.toLowerCase().indexOf(search.toLowerCase()) >= 0 ) {
-            return product;
-          };
-          return null
-        });
-        setFilteredProducts(
-          reqData.filter(val => {
-            if (val) return true;
-            return false;
-          })
-        );
-      } else setFilteredProducts(cartProducts);
+      // if (search) {
+      //   console.log(search);
+      //   const reqData = Object.values(cartProducts).map((product) => {
+      //     if( product.name.toLowerCase().indexOf(search.toLowerCase()) >= 0 ) {
+      //       return product;
+      //     };
+      //     return null
+      //   });
+      //   setFilteredProducts(
+      //     reqData.filter(val => {
+      //       if (val) return true;
+      //       return false;
+      //     })
+      //   );
+      // } else setFilteredProducts(cartProducts);
     },[]);
 
   return (
@@ -95,7 +95,7 @@ function Cart(props) {
         </Typography>
           <br /><br />
           <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
-          <RootStyle>
+          {/* <RootStyle>
                 <TextField
                   placeholder="Search Product..."
                   onChange={(e) => setSearch(e.target.value)}
@@ -118,7 +118,7 @@ function Cart(props) {
                     )
                   }}
                 />
-          </RootStyle>
+          </RootStyle> */}
         <FormControl sx={{ m: 1, minWidth: 80 }}>
       </FormControl>
 

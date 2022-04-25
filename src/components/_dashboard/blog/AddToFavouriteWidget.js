@@ -41,7 +41,7 @@ function FavouriteWidget(props) {
       setCartNumber(res.data.favouriteBlogs.length);
     })
   
-  })
+  },[cartNumber])
   return (
     <RootStyle>
       <Badge onClick={() =>  window.location.href = "http://localhost:3000/dashboard/favourites"} showZero badgeContent={cartNumber} color="error" max={99}>

@@ -34,6 +34,8 @@ import { styled } from '@material-ui/core/styles';
 import Paper from '@mui/material/Paper';
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 // ----------------------------------------------------------------------
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -118,6 +120,8 @@ export default function EcommerceShop() {
     setOpenSnack(false);
   };
 
+  const [alignment, setAlignment] = React.useState('buy');
+
     const onSort = (e) => {
       e.preventDefault();
       var res = Object.keys(Products)
@@ -145,6 +149,7 @@ export default function EcommerceShop() {
     }
 
     useEffect(() => {
+      console.log(alignment)
       if (selectedProductImage) {
         setUploadedProductUrl(URL.createObjectURL(selectedProductImage));
       }
@@ -157,24 +162,24 @@ export default function EcommerceShop() {
       //   setTotalPages(Math.ceil(res.data.length/12));
       // })
 
-      GetProducts(pageId)
-      .then((res => {
-        console.log(res.data);
-        dispatch({
-          type: "FETCH_POST_REQUEST",
-          payload: res.data.products
-        })
-      }))
+      // GetProducts(pageId)
+      // .then((res => {
+      //   console.log(res.data);
+      //   dispatch({
+      //     type: "FETCH_POST_REQUEST",
+      //     payload: res.data.products
+      //   })
+      // }))
 
       GetAllProducts()
       .then((res => {
         if(res){
         console.log(res.data);
         setTotalPages(Math.ceil(res.data.length/8));
-        // dispatch({
-        //   type: "FETCH_POST_REQUEST",
-        //   payload: res.data
-        // })
+        dispatch({
+          type: "FETCH_POST_REQUEST",
+          payload: res.data
+        })
         }
       }))
 
@@ -225,6 +230,9 @@ export default function EcommerceShop() {
       window.location.href = `/dashboard/products/${value}`
     };
 
+    const handleChange = (event, newAlignment) => {
+      setAlignment(newAlignment);
+    };
   return (
     <Page title="Products">
       <Container>
@@ -297,7 +305,7 @@ export default function EcommerceShop() {
         </Select>
       </FormControl>
 
-        </Stack>
+          </Stack>
       <Dialog open={openDailog}>
         <DialogTitle>Sell Product</DialogTitle>
         <DialogContent>
@@ -367,22 +375,48 @@ export default function EcommerceShop() {
           justifyContent="flex-end"
           sx={{ mb: 5 }}
         >
+            <ToggleButtonGroup
+              color="primary"
+              value={alignment}
+              exclusive
+              onChange={handleChange}
+            >
+              <ToggleButton value="buy">Buy Products</ToggleButton>
+              <ToggleButton value="my">My Products</ToggleButton>
+            </ToggleButtonGroup>
         </Stack>
 
+      
+{/* <UserProductCard  id={filteredProducts[key]._id} product={filteredProducts[key]} /> */}
+{/* <UserProductCard id={Products[key]._id} product={Products[key]} /> */}
         <Grid container spacing={3}>
           { Products.length > 0 ?
-            (
+            ( 
+              alignment === 'buy' ? (
               filteredProducts.length > 0 ? Object.keys(filteredProducts).map(function(key, index) {
               return <Grid key={filteredProducts[key]._id} item xs={12} sm={6} md={3}>
                 {/* {console.log(filteredProducts[key].sellerUserId +"  "+sellerid)} */}
-                     {(filteredProducts[key].sellerUserId === sellerid )? <UserProductCard  id={filteredProducts[key]._id} product={filteredProducts[key]} /> : <ProductCard  id={filteredProducts[key]._id} product={filteredProducts[key]} />}
+                     {(filteredProducts[key].sellerUserId === sellerid )? <></> : <ProductCard  id={filteredProducts[key]._id} product={filteredProducts[key]} />}
                     </Grid>
               }) : Object.keys(Products).map(function(key, index) {
                 return <Grid key={Products[key].sellerUserId} item xs={12} sm={6} md={3}>
                   {/* {console.log(Products[key].sellerUserId+ "  "+sellerid)} */}
-                {(Products[key].sellerUserId === sellerid) ? <UserProductCard id={Products[key]._id} product={Products[key]} /> : <ProductCard id={Products[key]._id} product={Products[key]} /> }
+                {(Products[key].sellerUserId === sellerid) ?  <></>: <ProductCard id={Products[key]._id} product={Products[key]} /> }
               </Grid>
-              }) 
+              })
+              ) :  
+              (filteredProducts.length > 0 ? Object.keys(filteredProducts).map(function(key, index) {
+                return <Grid key={filteredProducts[key]._id} item xs={12} sm={6} md={3}>
+                  {/* {console.log(filteredProducts[key].sellerUserId +"  "+sellerid)} */}
+                       {(filteredProducts[key].sellerUserId === sellerid )? <UserProductCard  id={filteredProducts[key]._id} product={filteredProducts[key]} /> : <></>}
+                      </Grid>
+                }) : Object.keys(Products).map(function(key, index) {
+                  return <Grid key={Products[key].sellerUserId} item xs={12} sm={6} md={3}>
+                    {/* {console.log(Products[key].sellerUserId+ "  "+sellerid)} */}
+                  {(Products[key].sellerUserId === sellerid) ?  <UserProductCard id={Products[key]._id} product={Products[key]} /> : <></> }
+                </Grid>
+                })
+              )
             ) : (Products.length == 0) ? null : <div style={{ alignItems: "center", display: "flex", justifyContent: "center", height: "50vh", width: "100vw" }}>
             <CircularProgress />
           </div>

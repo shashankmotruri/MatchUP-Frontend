@@ -56,29 +56,29 @@ function Blog(props) {
     .then((res) => {
         setAllFavouriteBlogs(res.data.favouriteBlogs);
     })
-    if (serachValue) {
-      const reqData = AllFavouriteBlogs.map((blog, index) => {
-        if( blog.title.toLowerCase().indexOf(serachValue.toLowerCase()) >= 0 ) {
-          return blog;
-        };
-        return null
-      });
-      setAllFavouriteBlogs(
-        reqData.filter(val => {
-          if (val) return true;
-          return false;
-        })
-      );
-    } else setAllFavouriteBlogs(AllFavouriteBlogs);
+    // if (serachValue) {
+    //   const reqData = AllFavouriteBlogs.map((blog, index) => {
+    //     if( blog.title.toLowerCase().indexOf(serachValue.toLowerCase()) >= 0 ) {
+    //       return blog;
+    //     };
+    //     return null
+    //   });
+    //   setAllFavouriteBlogs(
+    //     reqData.filter(val => {
+    //       if (val) return true;
+    //       return false;
+    //     })
+    //   );
+    // } else setAllFavouriteBlogs(AllFavouriteBlogs);
 
-  },[serachValue])
+  },[AllFavouriteBlogs])
 
   return (
     <Page title="Dashboard: Blog">
       <Container>
         <FavouriteWidget />
         <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
-          <RootStyle>
+          {/* <RootStyle>
                 <TextField
                   placeholder="Search Blog..."
                   onChange={(e) => setSerachValue(e.target.value)}
@@ -101,7 +101,7 @@ function Blog(props) {
                     )
                   }}
                 />
-          </RootStyle>
+          </RootStyle> */}
         <FormControl sx={{ m: 1, minWidth: 80 }}>
       </FormControl>
 
