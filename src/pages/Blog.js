@@ -126,11 +126,10 @@ function Blog(props) {
     } else SetFilteredBlogs(AllBlogs);
 
   },[serachValue])
-  let sellerid = localStorage.getItem('userId');
   const SaveBlog = (e) => {
     e.preventDefault();
     if(blogTitle && blogDescription && selectedProductImage){
-      CreateBlog(blogTitle,blogDescription,selectedProductImage,sellerid)
+      CreateBlog(blogTitle,blogDescription,selectedProductImage)
       .then((res) =>{
         console.log(res);
           switch(res.status){

@@ -44,7 +44,7 @@ function FavouriteWidget(props) {
   },[cartNumber])
   return (
     <RootStyle>
-      <Badge onClick={() =>  window.location.href = "http://localhost:3000/dashboard/favourites"} showZero badgeContent={cartNumber} color="error" max={99}>
+      <Badge onClick={() =>  window.location.href = "/dashboard/favourites"} showZero badgeContent={cartNumber} color="error" max={99}>
         <Icon icon={heartFilled} width={24} height={24} />
       </Badge>
     </RootStyle>

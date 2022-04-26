@@ -50,7 +50,7 @@ function CartWidget(props) {
   },[cartNumber])
   return (
     <RootStyle>
-      <Badge onClick={() =>  window.location.href = "http://localhost:3000/dashboard/cart"} showZero badgeContent={cartNumber} color="error" max={99}>
+      <Badge onClick={() =>  window.location.href = "/dashboard/cart"} showZero badgeContent={cartNumber} color="error" max={99}>
         <Icon icon={shoppingCartFill} width={24} height={24} />
       </Badge>
     </RootStyle>

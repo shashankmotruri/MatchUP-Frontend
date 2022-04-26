@@ -25,7 +25,7 @@ const  AccountProfileDetails = (props) => {
   const [values, setValues] = useState({
     firstName: user.firstName,
     lastName: user.lastName,
-    email: user.lastName,
+    email: user.email,
     phone: user.phone,
     DOB: user.DOB
   });

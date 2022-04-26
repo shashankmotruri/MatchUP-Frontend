@@ -201,7 +201,7 @@ export default function EcommerceShop() {
 
     const SaveProduct = (e) => {
       if(productTitle && productPrice && productPrice > 0 && productAvailable > 0){
-        CreateProduct(productAvailable,productTitle, productPrice, selectedProductImage,sellerid)
+        CreateProduct(productAvailable,productTitle, productPrice, selectedProductImage)
         .then((res) => {
             console.log(res);
             switch(res.status){

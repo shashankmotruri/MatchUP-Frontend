@@ -2,11 +2,10 @@ import axios from 'axios';
 
 import {API_URL} from '../Backend_URL';
 
-export default async function CreateBlog(blogtitle,blogDescription,image,sellerid){
+export default async function CreateBlog(blogtitle,blogDescription,image){
     let bodyFormData = new FormData();
     bodyFormData.append('title', blogtitle);
     bodyFormData.append('description', blogDescription);
-    bodyFormData.append('sellerUserId',sellerid );
     bodyFormData.append('file', image);
 
     return await axios({
