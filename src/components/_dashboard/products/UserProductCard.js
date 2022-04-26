@@ -15,6 +15,7 @@ import {upadteCartItems} from '../../../redux/actions/cartActions';
 import {addItem} from '../../../redux/actions/dashboard';
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
+import Chip from '@mui/material/Chip';  
 // ----------------------------------------------------------------------
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -40,7 +41,7 @@ const InputNumStyle = {
 }
 
 function UserProductCard({ product ,...props }) {
-  const { name, cover, price} = product;
+  const { name, cover, price,available} = product;
   const { id} = props;
   console.log(id)
   const [showProduct,setShowProduct] = useState(false);
@@ -146,7 +147,9 @@ function UserProductCard({ product ,...props }) {
       <Box sx={{ pt: '100%', position: 'relative' }}>
         <ProductImgStyle alt={name} src={cover} />
       </Box>
-
+      <Stack>
+          {available ==0 ? <Chip label="out of stock" style={{color: 'red'}} /> : <Chip label={available + " in stock" } />} 
+      </Stack>
       <Stack spacing={2} sx={{ p: 3 }}>
         <Link to="#" color="inherit" underline="hover" component={RouterLink}>
           <Typography variant="subtitle2" noWrap>
@@ -166,7 +169,9 @@ function UserProductCard({ product ,...props }) {
               {price} $
             </Typography>
           </Typography>
+    
           <Stack alignItems="right" justifyContent="space-between">
+     
           <Button
             type="button"
             variant="outlined"

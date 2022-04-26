@@ -79,7 +79,7 @@ function Blog(props) {
         <FavouriteWidget />
         <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
           {/* <RootStyle>
-                <TextField
+                <TextField  
                   placeholder="Search Blog..."
                   onChange={(e) => setSerachValue(e.target.value)}
                   InputProps={{

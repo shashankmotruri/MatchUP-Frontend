@@ -2,11 +2,12 @@ import axios from 'axios';
 import { mockImgProduct } from '../../utils/mockImages';
 import {API_URL} from '../Backend_URL';
 
-export default async function CreateBlog(productname,price,image,sellerId){
+export default async function CreateBlog(productAvailable,productname,price,image,sellerId){
     let bodyFormData = new FormData();
     bodyFormData.append('name', productname);
     bodyFormData.append('price', price);
     bodyFormData.append('sellerUserId',sellerId );
+    bodyFormData.append('available',productAvailable);
     bodyFormData.append('file', image);
     
     return await axios({
